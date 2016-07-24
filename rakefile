@@ -1,0 +1,18 @@
+require 'rake_tasks'
+
+require 'gems'
+require 'cane'
+
+require 'rake_tasks/tasks/gem'
+require 'rake_tasks/tasks/cane'
+require 'rake_tasks/tasks/console'
+require 'rake_tasks/tasks/checksum'
+
+$VERBOSE = true
+
+task :default => []
+Rake::Task[:default].clear_prerequisites
+
+task :default => [
+  :cane,
+]

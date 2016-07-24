@@ -1,0 +1,27 @@
+PATH
+  remote: .
+  specs:
+    active_container (0.0.1)
+
+GEM
+  remote: https://www.rubygems.org/
+  specs:
+    cane (3.0.0)
+      parallel
+    gems (0.8.3)
+    parallel (1.9.0)
+    rake (11.2.2)
+    rake_tasks (4.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  active_container!
+  cane
+  gems
+  rake
+  rake_tasks
+
+BUNDLED WITH
+   1.12.5
