@@ -14,8 +14,11 @@ Gem::Specification.new do |spec|
 
   spec.extra_rdoc_files << 'readme.md'
 
+  spec.add_dependency 'activesupport'
+
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rake_tasks'
   spec.add_development_dependency 'gems'
   spec.add_development_dependency 'cane'
+  spec.add_development_dependency 'rspec'
 end
