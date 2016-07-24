@@ -8,10 +8,24 @@ GEM
   specs:
     cane (3.0.0)
       parallel
+    diff-lcs (1.2.5)
     gems (0.8.3)
     parallel (1.9.0)
     rake (11.2.2)
     rake_tasks (4.1.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.1)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
 
 PLATFORMS
   ruby
@@ -22,6 +36,7 @@ DEPENDENCIES
   gems
   rake
   rake_tasks
+  rspec
 
 BUNDLED WITH
    1.12.5

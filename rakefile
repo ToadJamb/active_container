@@ -4,6 +4,7 @@ require 'gems'
 require 'cane'
 
 require 'rake_tasks/tasks/gem'
+require 'rake_tasks/tasks/spec'
 require 'rake_tasks/tasks/cane'
 require 'rake_tasks/tasks/console'
 require 'rake_tasks/tasks/checksum'
@@ -15,4 +16,5 @@ Rake::Task[:default].clear_prerequisites
 
 task :default => [
   :cane,
+  :specs,
 ]
