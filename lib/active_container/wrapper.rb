@@ -81,6 +81,7 @@ module ActiveContainer
       :save!,
       :reload,
       :errors,
+      :persisted?,
     ].each do |method|
       define_method method do |*args|
         @record.send(method, *args)
