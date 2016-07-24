@@ -15,7 +15,7 @@ module ActiveContainer
         return nil unless record
 
         if self == Wrapper
-          wrapper_name = record.class.to_s
+          wrapper_name = record.class.name
           wrapper_name += 'Wrapper'
 
           wrapper = Kernel.const_get(wrapper_name)
@@ -37,7 +37,7 @@ module ActiveContainer
       def object_class
         return nil if self == Wrapper
         return @object_class if defined?(@object_class)
-        object_class = self.name.to_s.gsub(/Wrapper/, '')
+        object_class = self.name.gsub(/Wrapper/, '')
         @object_class = Kernel.const_get(object_class)
       end
 
