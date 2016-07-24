@@ -121,9 +121,8 @@ It is important that the helpers are included prior to calling
 `delegate` as there are checks to ensure that assignment
 methods do not already exist.
 
-`ActiveContainer::Wrapper` automatically passes a few methods through
-to the underlying model.
-This includes `id`, so you never need to explicitly include it.
+`ActiveContainer::Wrapper` automatically passes `id` to the underlying model,
+so it does not need to be included in the list sent to `delegate`.
 
 
 ### Commentary

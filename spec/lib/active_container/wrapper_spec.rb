@@ -259,9 +259,4 @@ RSpec.describe ActiveContainer::Wrapper  do
   end
 
   it_behaves_like 'instance delegate', :id
-  it_behaves_like 'instance delegate', :save
-  it_behaves_like 'instance delegate', :save!
-  it_behaves_like 'instance delegate', :reload
-  it_behaves_like 'instance delegate', :errors
-  it_behaves_like 'instance delegate', :persisted?
 end
