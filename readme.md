@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ToadJamb/active_container.svg?branch=chore%2Ftravis-ci)](https://travis-ci.org/ToadJamb/active_container)
+
 ActiveContainer
 ===============
 

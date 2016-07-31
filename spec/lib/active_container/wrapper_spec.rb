@@ -62,7 +62,7 @@ RSpec.describe ActiveContainer::Wrapper  do
       context 'given a child wrapper does not exist' do
         it 'raises an error' do
           expect{subject}.to raise_error NameError,
-            /uninitialized constant Kernel::OpenStructWrapper/
+            /uninitialized constant (Kernel::)?OpenStructWrapper/
         end
       end
 
@@ -218,7 +218,7 @@ RSpec.describe ActiveContainer::Wrapper  do
     context 'given something with a name that does not match' do
       it 'raises an error' do
         expect{child_wrapper.object_class}.to raise_error NameError,
-          /uninitialized constant Kernel::FooBar/
+          /uninitialized constant (Kernel::)?FooBar/
       end
     end
   end
