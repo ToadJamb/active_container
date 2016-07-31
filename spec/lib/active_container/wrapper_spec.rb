@@ -2,9 +2,17 @@ require 'spec_helper'
 
 RSpec.describe ActiveContainer::Wrapper  do
   subject { described_class.new record }
+  let(:klass) do
+    k = StrongStruct.new(:first_name, :last_name)
+    Class.new(k) do
+      def self.name
+        'FooBar'
+      end
+    end
+  end
 
-  let(:record)             { OpenStruct.new }
-  let(:child_object_class) { OpenStruct }
+  let(:record)             { klass.new }
+  let(:child_object_class) { klass }
 
   let(:child_wrapper) do
     Class.new(ActiveContainer::Wrapper) do
@@ -16,7 +24,7 @@ RSpec.describe ActiveContainer::Wrapper  do
 
   describe '.new' do
     context 'given an object' do
-      before { expect(record).to be_a OpenStruct }
+      before { expect(record).to be_a klass }
 
       it 'uses the object as the record' do
         expect(subject.record).to eq record
@@ -26,7 +34,7 @@ RSpec.describe ActiveContainer::Wrapper  do
     context 'given a hash' do
       subject { child_wrapper.new record }
 
-      let(:record) { {:foo => 'bar'} }
+      let(:record) { {:first_name => 'John'} }
 
       before do
         allow(Kernel)
@@ -36,7 +44,7 @@ RSpec.describe ActiveContainer::Wrapper  do
       end
 
       it 'creates a new object based on the parent class of the wrapper' do
-        expect(subject.record.foo).to eq 'bar'
+        expect(subject.record.first_name).to eq 'John'
       end
     end
   end
@@ -49,7 +57,7 @@ RSpec.describe ActiveContainer::Wrapper  do
         before do
           allow(Kernel)
             .to receive(:const_get)
-            .with('OpenStructWrapper')
+            .with('FooBarWrapper')
             .and_return child_wrapper
         end
 
@@ -62,7 +70,7 @@ RSpec.describe ActiveContainer::Wrapper  do
       context 'given a child wrapper does not exist' do
         it 'raises an error' do
           expect{subject}.to raise_error NameError,
-            /uninitialized constant (Kernel::)?OpenStructWrapper/
+            /uninitialized constant (Kernel::)?FooBarWrapper/
         end
       end
 
@@ -122,32 +130,32 @@ RSpec.describe ActiveContainer::Wrapper  do
   describe '.delegate' do
     subject { child_wrapper.new record }
 
-    let(:record) { OpenStruct.new(:foo => 'bar', :bar => 'baz') }
+    let(:record) { klass.new({:first_name => 'Joe', :last_name => 'Schmoe'}) }
 
     let(:child_wrapper) do
       Class.new(described_class) do
-        def bar=(value)
-          @record.bar = 'u cant touch this!'
+        def last_name=(value)
+          @record.last_name = 'Dimaggio'
         end
 
-        delegate :foo, :bar
+        delegate :first_name, :last_name
       end
     end
 
     it 'delegates the getter to the record' do
-      expect(subject.foo).to eq 'bar'
+      expect(subject.first_name).to eq 'Joe'
     end
 
     it 'delegates the setter to the record' do
-      subject.foo = 'qux'
-      expect(subject.foo).to eq 'qux'
+      subject.first_name = 'Mo'
+      expect(subject.first_name).to eq 'Mo'
     end
 
     context 'given the setter is already defined on the wrapper' do
       it 'uses the setter on the wrapper' do
-        expect(subject.bar).to eq 'baz'
-        subject.bar = 'baz'
-        expect(subject.bar).to eq 'u cant touch this!'
+        expect(subject.last_name).to eq 'Schmoe'
+        subject.last_name = 'Blow'
+        expect(subject.last_name).to eq 'Dimaggio'
       end
     end
   end
@@ -155,7 +163,9 @@ RSpec.describe ActiveContainer::Wrapper  do
   describe '.wrap_delegate' do
     subject { child_wrapper.new record }
 
-    let(:record) { OpenStruct.new(:foo => 'bar', :bars => ['baz-1', 'baz-2']) }
+    let(:klass) { StrongStruct.new :foo, :bars }
+
+    let(:record) { klass.new(:foo => 'bar', :bars => ['baz-1', 'baz-2']) }
 
     let(:child_wrapper) do
       Class.new(described_class) do
@@ -229,34 +239,29 @@ RSpec.describe ActiveContainer::Wrapper  do
     end
   end
 
-  shared_examples_for 'instance delegate' do |method|
+  shared_examples_for 'instance delegate' do |method, value|
     subject { child_wrapper.new record }
 
-    let(:record) do
-      klass = Class.new do
-        def self.add_method(method, value)
-          define_method method do
-            return value
+    context "given #{method}" do
+      let(:record) do
+        klass = Class.new do
+          def self.add_method(method, value)
+            define_method method do
+              return value
+            end
           end
         end
+
+        klass.add_method method, value
+
+        klass.new
       end
 
-      klass.add_method method, "#{method}-value"
-
-      klass.new
-    end
-
-    before do
-      allow(Kernel)
-        .to receive(:const_get)
-        .with('OpenStructWrapper')
-        .and_return child_wrapper
-    end
-
-    it 'returns the value from the record' do
-      expect(subject.send(method)).to eq "#{method}-value"
+      it "returns the #{value}" do
+        expect(subject.send(method)).to eq value
+      end
     end
   end
 
-  it_behaves_like 'instance delegate', :id
+  it_behaves_like 'instance delegate', :id, 3
 end
