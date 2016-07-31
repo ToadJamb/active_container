@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
     Trim the fatty models. Use ActiveContainer.
   '.strip
   spec.homepage      = 'http://www.bitbucket.org/ToadJamb/active_container'
-  spec.license       = 'LGPLV3'
+  spec.license       = 'LGPL-3.0'
 
   spec.files         = Dir['lib/**/*.rb', 'license/*']
 
